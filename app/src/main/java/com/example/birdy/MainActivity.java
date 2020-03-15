@@ -13,12 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.birdy.database.BirdyDBHelper;
+import com.example.birdy.layout_entities.search_result_activity.SearchResultItem;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int SEARCH_REQUEST = 1;
+    static final String ACTIVITY_TITLE = "Library";
 
-    public void changeActivity(View v) {
+    private void changeActivity(View v) {
         Intent intent = new Intent(this, SearchResultsActivity.class);
         intent.putExtra("search_text", ((EditText) v).getText().toString());
         this.startActivityForResult(intent, SEARCH_REQUEST);
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setTitle(ACTIVITY_TITLE);
         //TO DO: db initialization
 
         setContentView(R.layout.activity_main);
@@ -49,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-            if(requestCode == SEARCH_REQUEST){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SEARCH_REQUEST) {
                 // TO DO: getting item info and putting it into a db
             }
         }

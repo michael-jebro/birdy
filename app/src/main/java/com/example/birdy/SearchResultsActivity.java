@@ -3,6 +3,9 @@ package com.example.birdy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,12 +26,29 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     static final String ITUNES_URL = "https://itunes.apple.com/";
 
+    private void displayResults(View v){
+
+    }
+
+    private void displayNoMatchResultsFound(View v){
+        // TO DO
+    }
+
+    private void returnWithResult(Bundle bundle) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         String searchText = intent.getStringExtra("search_text");
+        this.setTitle(searchText);
+        GridLayout gridLayout = findViewById(R.id.searchField);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -41,12 +61,14 @@ public class SearchResultsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ITunesResponseModel> call,
                                            Response<ITunesResponseModel> response) {
-                        List<Result> results = response.body().getResults();
+                        ITunesResponseModel responceBody = response.body();
 
-                        if (results != null) {
-                            Log.v("User_log", results.get(0).getArtistName());
+                        if (responceBody.getResults() == null) {
+                            //displayNoMatchResultsFound();
+                            Log.v("User_log", "no matching results found");
                         } else {
-                            //TO DO: inform user about no matching results found
+                            //displayResults();
+
                         }
                     }
 
@@ -58,12 +80,5 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         Log.v("User_log", searchText);
 
-    }
-
-    public void returnWithResult() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("result_image", "...");
-        setResult(RESULT_OK, intent);
-        finish();
     }
 }
