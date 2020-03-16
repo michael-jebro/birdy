@@ -26,18 +26,22 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     static final String ITUNES_URL = "https://itunes.apple.com/";
 
-    private void displayResults(View v){
-
+    private void displayResults(View v, List<Result> results) {
     }
 
-    private void displayNoMatchResultsFound(View v){
+    private void displayNoMatchResultsFound(View v) {
         // TO DO
     }
 
-    private void returnWithResult(Bundle bundle) {
+    private void finishActivityWithMediaItem(Bundle bundle) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    private void finishActivity() {
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -67,7 +71,6 @@ public class SearchResultsActivity extends AppCompatActivity {
                             //displayNoMatchResultsFound();
                             Log.v("User_log", "no matching results found");
                         } else {
-                            //displayResults();
 
                         }
                     }

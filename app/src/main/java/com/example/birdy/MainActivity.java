@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.birdy.database.BirdyDBHelper;
-import com.example.birdy.layout_entities.search_result_activity.SearchResultItem;
 
 public class MainActivity extends AppCompatActivity {
 
