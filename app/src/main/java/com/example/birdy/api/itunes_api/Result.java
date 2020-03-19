@@ -1,4 +1,4 @@
-package com.example.birdy.request;
+package com.example.birdy.api.itunes_api;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

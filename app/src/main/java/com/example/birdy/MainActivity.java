@@ -9,41 +9,46 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.example.birdy.api.APIController;
+import com.example.birdy.api.itunes_api.ITunesResponseModel;
+import com.example.birdy.api.itunes_api.Result;
 import com.example.birdy.database.BirdyDBHelper;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnEditorAction;
+import retrofit2.Response;
+
+public class MainActivity extends AppCompatActivity {
     static final int SEARCH_REQUEST = 1;
     static final String ACTIVITY_TITLE = "Library";
 
-    private void changeActivity(View v) {
-        Intent intent = new Intent(this, SearchResultsActivity.class);
-        intent.putExtra("search_text", ((EditText) v).getText().toString());
-        this.startActivityForResult(intent, SEARCH_REQUEST);
+    private APIController apiController;
+
+    @BindView(R.id.searchField)
+    EditText searchField;
+
+    @OnEditorAction(R.id.searchField)
+    public boolean onEditorAction(EditText v, int actionId, KeyEvent event) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            startSearchResultsActivity(v.getText().toString());
+            handled = true;
+        }
+        return handled;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        apiController = APIController.getInstance();
+
         this.setTitle(ACTIVITY_TITLE);
-        //TO DO: db initialization
-
         setContentView(R.layout.activity_main);
-        EditText editText = findViewById(R.id.searchField);
-
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    changeActivity(v);
-                    handled = true;
-                }
-                return handled;
-            }
-        });
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -59,8 +64,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        BirdyDBHelper.getInstance(getApplicationContext()).close();
         super.onDestroy();
+    }
+
+    private void startSearchResultsActivity(String key) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putExtra("search_text", key);
+        this.startActivityForResult(intent, SEARCH_REQUEST);
     }
 
 }
